@@ -193,23 +193,27 @@ def build_activation_layer(cfg):
 
 
 _upsample_cfgs = {
-    'deconv': lambda c_in, c_out, k, s, p, o: nn.ConvTranspose2d(c_in, c_out, k, s, p, output_padding=o),
-    'deconv_t': lambda c_in, c_out, k, s, p, o: nn.ConvTranspose2d(c_in, c_out, k, s, p, output_padding=o),
-    'nearest': lambda c_in, c_out, k, s, p, o: nn.Sequential(nn.Upsample(scale_factor=s, mode='nearest'), nn.Conv2d(c_in, c_out, k, 1, p)),
-    'bilinear': lambda c_in, c_out, k, s, p, o: nn.Sequential(nn.Upsample(scale_factor=s, mode='bilinear', align_corners=False), nn.Conv2d(c_in, c_out, k, 1, p)),
+    'deconv': nn.ConvTranspose2d,
+    'deconv_t': nn.ConvTranspose2d,
+    'nearest': lambda **kwargs: nn.Sequential(nn.Upsample(scale_factor=kwargs.pop('scale_factor', 2), mode='nearest'), nn.Conv2d(**kwargs)),
+    'bilinear': lambda **kwargs: nn.Sequential(nn.Upsample(scale_factor=kwargs.pop('scale_factor', 2), mode='bilinear', align_corners=False), nn.Conv2d(**kwargs)),
 }
 
 
-def build_upsample_layer(cfg):
-    cfg = cfg.copy()
-    up_type = cfg.pop('type')
+def build_upsample_layer(cfg, *args, **kwargs):
+    if isinstance(cfg, str):
+        cfg = dict(type=cfg)
+    cfg = cfg.copy() if cfg else {}
+    up_type = cfg.pop('type', 'deconv')
     factory = _upsample_cfgs.get(up_type, _upsample_cfgs['deconv'])
-    return factory(**cfg)
+    return factory(*args, **cfg, **kwargs)
 
 
 _conv_cfgs = {
-    'Conv2d': lambda c_in, c_out, k, s, p, d, g, b: nn.Conv2d(c_in, c_out, k, s, p, d, g, b),
-    'Conv': lambda c_in, c_out, k, s, p, d, g, b: nn.Conv2d(c_in, c_out, k, s, p, d, g, b),
+    'Conv2d': nn.Conv2d,
+    'Conv': nn.Conv2d,
+    'Conv3d': nn.Conv3d,
+    'Conv1d': nn.Conv1d,
 }
 
 
@@ -248,17 +252,7 @@ def build_model_from_cfg(cfg, registry, default_args=None):
         obj_cls = registry.get(obj_type)
     else:
         obj_cls = obj_type
-    for key, val in list(args.items()):
-        if isinstance(val, dict) and 'type' in val:
-            args[key] = build_model_from_cfg(val, registry, default_args)
-        elif isinstance(val, (list, tuple)):
-            built = []
-            for v in val:
-                if isinstance(v, dict) and 'type' in v:
-                    built.append(build_model_from_cfg(v, registry, default_args))
-                else:
-                    built.append(v)
-            args[key] = type(val)(built)
+    pass
     if default_args:
         for key, val in default_args.items():
             args.setdefault(key, val)

@@ -3,7 +3,8 @@ import math
 import torch
 import torch.nn as nn
 
-
+from .registry import (ATTENTION, FEEDFORWARD_NETWORK, POSITIONAL_ENCODING,
+                       TRANSFORMER_LAYER, TRANSFORMER_LAYER_SEQUENCE)
 class Linear(nn.Module):
     def __init__(self, in_features, out_features, bias=True):
         super().__init__()
