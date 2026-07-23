@@ -16,6 +16,15 @@ OUTPUTS_DIR = os.path.join(ROOT, 'outputs')
 
 
 def cmd_infer(args):
+    # Quick chumpy smoke test (compat layer loaded above)
+    try:
+        import chumpy  # noqa: F401
+        print("[PASS] chumpy loaded successfully")
+    except Exception as e:
+        print(f"[FAIL] chumpy failed to load: {e}")
+        print("Suggestion: run 'python run.py doctor' to diagnose environment issues.")
+        sys.exit(1)
+
     sys.path.insert(0, OSX_DIR)
     sys.path.insert(0, os.path.join(OSX_DIR, 'main'))
     sys.path.insert(0, os.path.join(OSX_DIR, 'data'))

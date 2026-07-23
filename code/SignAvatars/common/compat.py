@@ -20,18 +20,23 @@ if not hasattr(inspect, 'getargspec'):
     inspect.getargspec = inspect.getfullargspec
 
 # --- NumPy 2.x deprecated aliases ---
-# NumPy 2.0 removed: np.bool, np.int, np.float, np.complex, np.object, np.str
-# Use try/except to avoid FutureWarning from hasattr in NumPy >= 2.1
+# NumPy 2.0 removed the Python-builtin aliases: bool, int, float, complex,
+# object, str, unicode. Some packages (chumpy, etc.) still import them
+# via "from numpy import bool, int, ...".
+# Use try/except to avoid FutureWarning from hasattr in NumPy >= 2.1.
+_ALIASES = [
+    ('bool', bool),
+    ('int', int),
+    ('float', float),
+    ('complex', complex),
+    ('object', object),
+    ('str', str),
+    ('unicode', str),
+]
+
 with warnings.catch_warnings():
     warnings.simplefilter('ignore', FutureWarning)
-    for _name, _replacement in [
-        ('bool', bool),
-        ('int', int),
-        ('float', float),
-        ('complex', complex),
-        ('object', object),
-        ('str', str),
-    ]:
+    for _name, _replacement in _ALIASES:
         if not hasattr(np, _name):
             setattr(np, _name, _replacement)
 
