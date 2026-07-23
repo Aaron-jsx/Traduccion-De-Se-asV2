@@ -10,14 +10,26 @@ Usage:
     import common.compat  # do this FIRST, before any other imports
 """
 
+from collections import namedtuple
 import inspect
 import warnings
 import numpy as np
 
 # --- inspect.getargspec (removed in Python 3.11) ---
-# Restore as an alias of getfullargspec for chumpy 0.70 and older.
-if not hasattr(inspect, 'getargspec'):
-    inspect.getargspec = inspect.getfullargspec
+# Restore as a true compatibility wrapper for chumpy.
+if not hasattr(inspect, "getargspec"):
+    ArgSpec = namedtuple("ArgSpec", "args varargs keywords defaults")
+
+    def getargspec(func):
+        spec = inspect.getfullargspec(func)
+        return ArgSpec(
+            spec.args,
+            spec.varargs,
+            spec.varkw,
+            spec.defaults,
+        )
+
+    inspect.getargspec = getargspec
 
 # --- NumPy 2.x deprecated aliases ---
 # NumPy 2.0 removed the Python-builtin aliases: bool, int, float, complex,
