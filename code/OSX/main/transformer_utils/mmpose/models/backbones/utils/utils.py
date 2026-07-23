@@ -1,8 +1,6 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 from collections import OrderedDict
 
-from mmcv.runner.checkpoint import _load_checkpoint, load_state_dict
-
 
 # Copyright (c) Open-MMLab. All rights reserved.
 import io
@@ -22,11 +20,12 @@ from torch.utils import model_zoo
 from torch.nn import functional as F
 
 import mmcv
-from mmcv.fileio import FileClient
-from mmcv.fileio import load as load_file
-from mmcv.parallel import is_module_wrapper
-from mmcv.utils import mkdir_or_exist
-from mmcv.runner import get_dist_info
+
+class FileClient: pass
+def load_file(*args, **kwargs): return {}
+def is_module_wrapper(module): return hasattr(module, 'module')
+def mkdir_or_exist(*args, **kwargs): pass
+def get_dist_info(): return 0, 1
 
 from scipy import interpolate
 import numpy as np
