@@ -27,6 +27,7 @@ def cmd_infer(args):
 
     sys.path.insert(0, OSX_DIR)
     sys.path.insert(0, os.path.join(OSX_DIR, 'main'))
+    sys.path.insert(0, os.path.join(OSX_DIR, 'main', 'transformer_utils'))
     sys.path.insert(0, os.path.join(OSX_DIR, 'data'))
 
     from config import cfg
