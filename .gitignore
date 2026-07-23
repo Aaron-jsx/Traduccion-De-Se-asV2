@@ -1,4 +1,5 @@
 models/
+!code/OSX/main/transformer_utils/mmpose/models/
 videos/
 outputs/
 cache/
