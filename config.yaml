@@ -1,0 +1,14 @@
+paths:
+  code:
+    osx: code/OSX
+    signavatars: code/SignAvatars
+  models:
+    human_model_files: models/human_model_files
+    pretrained_models: models/pretrained_models
+  videos: videos
+  outputs: outputs
+
+model:
+  checkpoint: models/pretrained_models/osx_l_wo_decoder.pth.tar
+  encoder: osx_l
+  decoder: wo_decoder
