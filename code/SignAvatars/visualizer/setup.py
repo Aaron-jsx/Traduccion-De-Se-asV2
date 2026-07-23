@@ -28,7 +28,7 @@ setup(
     python_requires=">=3.7",
     install_requires=[
         "torch>=1.6.0",
-        "numpy>=1.18,<2",
+        "numpy>=1.18,<3",
         "opencv-contrib-python-headless>=4.5.1.48",
         "smplx",
         "moderngl-window>=2.4.3",
@@ -37,7 +37,7 @@ setup(
         "imgui==2.0.0",
         "tqdm>=4.60.0",
         "trimesh>=3.9.15,<4",
-        "scipy>=1.5.2,<1.8",
+        "scipy>=1.5.2",
         "omegaconf>=2.1.1",
         "roma>=1.2.3",
         "joblib",

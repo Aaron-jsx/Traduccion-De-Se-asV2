@@ -4,6 +4,10 @@ import argparse
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 
+# Python 3.12+ / NumPy 2.x compatibility (must be first)
+sys.path.insert(0, os.path.join(ROOT, 'code', 'SignAvatars'))
+import common.compat  # noqa: F401
+
 OSX_DIR = os.path.join(ROOT, 'code', 'OSX')
 SA_DIR = os.path.join(ROOT, 'code', 'SignAvatars')
 MODEL_PATH = os.path.join(ROOT, 'models', 'pretrained_models', 'osx_l_wo_decoder.pth.tar')

@@ -21,6 +21,7 @@ Usage:
     python pipeline/infer_video.py --video path/to/video.mp4 --render
 """
 
+import common.compat  # noqa: F401 (must be first: Python 3.12 + NumPy 2 patches)
 import os
 import sys
 import argparse

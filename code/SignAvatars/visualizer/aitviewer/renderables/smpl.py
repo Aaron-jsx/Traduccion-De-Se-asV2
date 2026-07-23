@@ -444,7 +444,7 @@ class SMPLSequence(Node):
         """
         ids = np.unique(frame_ids)
         all_ids = np.arange(self.n_frames)
-        mask_avail = np.ones(self.n_frames, dtype=np.bool)
+        mask_avail = np.ones(self.n_frames, dtype=bool)
         mask_avail[ids] = False
 
         # Interpolate poses.

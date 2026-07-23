@@ -1,3 +1,4 @@
+import common.compat  # noqa: F401 (must be first: Python 3.12 + NumPy 2 patches)
 import sys
 sys.path.insert(0, 'common/utils')
 import pyrender
